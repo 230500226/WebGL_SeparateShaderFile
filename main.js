@@ -1,3 +1,6 @@
+import {vertexCode} from './shader.js';
+import {fragmentCode} from './shader.js';
+
 function showError(errorText) {
     const errorBoxDiv = document.getElementById('error-box');
     const errorSpan = document.createElement('p');
@@ -32,19 +35,11 @@ function helloTriangle(){
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleGeoBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, triangleVerticesCpuBuffer, gl.STATIC_DRAW);
 
-    const vertexShaderSourceCode = `
-    precision mediump float;
-    
-    attribute vec3 vertexPosition;
-
-    void main() {
-    
-       gl_Position = vec4(vertexPosition, 1.0);
-
-    }`;
+    // Using the vertex shader from another file
+    const vertexShaderSourceCode = vertexCode;
 
     const vertexShader = gl.createShader(gl.VERTEX_SHADER);
-    gl.shaderSource(vertexShader, vertexShaderSourceCode);
+    gl.shaderSource(vertexShader, vertexCode);
     gl.compileShader(vertexShader);
 
     if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)){
@@ -53,13 +48,8 @@ function helloTriangle(){
                 return;
     }
 
-    const fragmentShaderSourceCode = `
-    precision mediump float;
-
-    void main() {
-        gl_FragColor = vec4(0.8,0,0,1);
-    }`;
-
+    // Using the fragment shader from another file
+    const fragmentShaderSourceCode = fragmentCode;
 
     const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
     gl.shaderSource(fragmentShader, fragmentShaderSourceCode);
